@@ -38,7 +38,7 @@ brew test letientai299/tap/vpdf
 No Rust toolchain or native build dependencies are required.
 
 The formula uses a commit-pinned snapshot, with a timestamp version for
-`brew upgrade`. It does not download the replaceable `main` release.
+`brew upgrade`. It does not download the replaceable `dev` release.
 
 Successful vpdf releases update this formula automatically. The upstream
 workflow checks the installed binaries, pushes the formula using a tap-scoped

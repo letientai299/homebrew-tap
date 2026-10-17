@@ -25,7 +25,7 @@ class RetentionTests(unittest.TestCase):
             prune_plan([release(number) for number in range(1, 9)], release(1)["tag_name"], 5)
 
     def test_ignores_other_releases(self):
-        releases = [release(1), release(2, tag_name="main"), release(3, draft=True)]
+        releases = [release(1), release(2, tag_name="main"), release(3, tag_name="dev"), release(4, draft=True)]
         self.assertEqual(prune_plan(releases, release(1)["tag_name"], 1), [])
 
     def test_under_limit(self):
