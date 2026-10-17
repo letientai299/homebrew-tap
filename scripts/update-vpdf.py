@@ -3,25 +3,14 @@
 
 import datetime
 import hashlib
-import json
 import os
-from pathlib import Path
 import re
-import subprocess
 import sys
 import tempfile
 import urllib.request
 
 
-REPOSITORY = "letientai299/vpdf"
-
-
-def github(path):
-    result = subprocess.run(
-        ["gh", "api", f"repos/{REPOSITORY}/{path}"],
-        check=True, capture_output=True, text=True,
-    )
-    return json.loads(result.stdout)
+from snapshots import ROOT, github
 
 
 def checksum(asset, sidecar):
@@ -85,7 +74,11 @@ BLOCKS
   end
 end
 '''.replace("VERSION", version).replace("BLOCKS", "\n\n".join(blocks))
-    target = Path(__file__).resolve().parents[1] / "Formula" / "vpdf.rb"
+    target = ROOT / "Formula" / "vpdf.rb"
+    if target.exists():
+        current = re.search(r'version "([0-9.]+)"', target.read_text())
+        if current and tuple(map(int, current[1].split("."))) > tuple(map(int, version.split("."))):
+            raise ValueError("Snapshot update would downgrade vpdf")
     with tempfile.NamedTemporaryFile(mode="w", dir=target.parent, delete=False) as staged:
         staged.write(formula)
         staged_path = staged.name

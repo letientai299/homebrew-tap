@@ -23,6 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     env:
+      PYTHONDONTWRITEBYTECODE: '1'
       HOMEBREW_NO_AUTO_UPDATE: '1'
       HOMEBREW_NO_INSTALL_CLEANUP: '1'
     steps:
@@ -30,6 +31,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
+      - name: Test snapshot retention
+        run: python3 -m unittest discover -s scripts
       - name: Tap checkout
         run: brew tap --custom-remote letientai299/tap "$GITHUB_WORKSPACE"
       - name: Check formula style
@@ -37,6 +40,6 @@ jobs:
       - name: Install vpdf
         run: brew install letientai299/tap/vpdf
       - name: Audit vpdf
-        run: brew audit --strict --installed letientai299/tap/vpdf
+        run: brew audit --strict --formula letientai299/tap/vpdf
       - name: Test vpdf
         run: brew test letientai299/tap/vpdf
