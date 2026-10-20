@@ -1,15 +1,15 @@
 class Vpdf < Formula
   desc "Keyboard-driven terminal PDF reader"
   homepage "https://github.com/letientai299/vpdf"
-  version "0.0.20261019024748"
+  version "0.0.20261020023827"
   license "AGPL-3.0-or-later"
 
   on_macos do
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/letientai299/vpdf/releases/download/snapshot-2ddd3796fb804aefe270c726602a36174f454b22/vpdf-macos-aarch64.tar.gz"
-      sha256 "8b309dd0f94d88e0186036f1d5cd88efbb97b2238a4c0375d478648d106f4e07"
+      url "https://github.com/letientai299/vpdf/releases/download/snapshot-504c96676a7ce6eea6e8e7c0f271ea90f1039d0c/vpdf-macos-aarch64.tar.gz"
+      sha256 "c9492104a787fec4f1668456ea6a08cafb4817534a469ec2b5c9522ecf54cd77"
     end
   end
 
@@ -17,8 +17,8 @@ class Vpdf < Formula
     depends_on arch: :x86_64
 
     on_intel do
-      url "https://github.com/letientai299/vpdf/releases/download/snapshot-2ddd3796fb804aefe270c726602a36174f454b22/vpdf-linux-x86_64.tar.gz"
-      sha256 "71219918b56dbbf613a6d476f1860bd9963d3f163a3c91221259005230010a80"
+      url "https://github.com/letientai299/vpdf/releases/download/snapshot-504c96676a7ce6eea6e8e7c0f271ea90f1039d0c/vpdf-linux-x86_64.tar.gz"
+      sha256 "2658a8941117bbecb8f5db587cf473b80b0aa4e17b7d60f7a75442b763f0eb8c"
     end
   end
 
