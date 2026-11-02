@@ -19,7 +19,7 @@ brew install vpdf
 
 Keep each tool's formula under `Formula/`. Pin downloadable archives to an
 immutable release or source revision and record their SHA-256 checksums.
-Increase the formula version when publishing a new snapshot so `brew upgrade`
+Increase the formula version when publishing a new release so `brew upgrade`
 can detect the update.
 
 Run checks before submitting changes:
@@ -32,43 +32,25 @@ brew test letientai299/tap/vpdf
 
 [homebrew]: https://brew.sh/
 
-## vpdf snapshots
+## vpdf releases
 
-[vpdf][vpdf] installs prebuilt binaries for macOS ARM64 and Linux x86-64.
-No Rust toolchain or native build dependencies are required.
+[vpdf][vpdf] installs stable terminal binaries for macOS ARM64 and Linux
+x86-64. The native app remains source-only.
 
-The formula uses a commit-pinned snapshot, with a timestamp version for
-`brew upgrade`. It does not download the replaceable `dev` release.
+The upstream release workflow updates the formula after checking installation
+through mise. Stable versions pin immutable release archives and checksums.
+Development snapshots and rolling releases are no longer published.
 
-Successful vpdf releases update this formula automatically. The upstream
-workflow checks the installed binaries, pushes the formula using a tap-scoped
-deploy key, then applies the retention policy in `snapshots.json`.
-
-The policy keeps the five most recently published snapshot releases. Cleanup
-also removes their tags. It excludes rolling and versioned releases and refuses
-to delete the snapshot pinned by the current formula. A formula update cannot
-downgrade its snapshot version.
-
-For a manual update, after upstream publishes a new `snapshot-<full-commit-sha>` release, set
-`snapshot_tag` to that tag and run:
+After a stable release is published, update the formula with:
 
 ```sh
-python3 scripts/update-vpdf.py "$snapshot_tag"
+python3 scripts/update-vpdf.py v0.1.0
 ```
 
-The updater requires Python 3.9 or later and an authenticated [GitHub CLI][gh].
-It checks that the tag points to the named commit, verifies both downloaded
-archives against their SHA-256 sidecars, and replaces the formula only after
-both checks pass. Review and test the formula before committing the update.
-
-Preview cleanup without deleting releases:
-
-```sh
-python3 scripts/snapshots.py
-```
-
-`python3 scripts/snapshots.py --apply` requires a GitHub token with write access
-to vpdf releases. The automated release job supplies its repository token.
+The updater needs Python 3.9 or later and an authenticated [GitHub CLI][gh].
+It verifies downloaded archives against SHA-256 sidecars, refuses downgrades,
+and replaces the formula after both platform checks pass. Review and test the
+formula before committing.
 
 [vpdf]: https://github.com/letientai299/vpdf
 [gh]: https://cli.github.com/

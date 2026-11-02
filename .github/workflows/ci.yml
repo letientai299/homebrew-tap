@@ -33,7 +33,7 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@4790763c0a3ba4036f72634dc079c4a7dfcd4878
         with:
           stable: true
-      - name: Test snapshot retention
+      - name: Test stable updater
         run: python3 -m unittest discover -s scripts
       - name: Tap checkout
         run: brew tap --custom-remote letientai299/tap "$GITHUB_WORKSPACE"
