@@ -74,6 +74,7 @@ class ReleaseTests(unittest.TestCase):
                 self.assertIn('version "0.1.0"', result)
                 self.assertNotIn("snapshot-", result)
                 self.assertEqual(result.count('sha256 "'), 2)
+                self.assertIn('ENV["VPDF_PREVIEW"] = "text"', result)
                 self.assertIn('assert_equal "vpdf #{version}"', result)
                 update.main()
                 formula.write_text(

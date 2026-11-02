@@ -89,8 +89,8 @@ BLOCKS
   end
 
   test do
-    metadata = JSON.parse(shell_output("#{bin}/vpdf info #{test_fixtures("test.pdf")}"))
-    assert_equal 1, metadata.fetch("pages").length
+    ENV["VPDF_PREVIEW"] = "text"
+    assert_match "Homebrew test.", shell_output("#{bin}/vpdf #{test_fixtures("test.pdf")}")
     output = shell_output("#{bin}/vpdf --version")
     assert_equal "vpdf #{version}", output.lines.first.strip
     assert_match "# Vpdf v#{version}", output
