@@ -99,7 +99,10 @@ end
 """.replace("VERSION", version).replace("BLOCKS", "\n\n".join(blocks))
     target = ROOT / "Formula" / "vpdf.rb"
     if target.exists():
-        current = re.search(r'version "([0-9.]+)"', target.read_text())
+        text = target.read_text()
+        # Snapshot versions encode timestamps, not releases.
+        snapshot = "/releases/download/snapshot-" in text
+        current = None if snapshot else re.search(r'version "([0-9.]+)"', text)
         if current:
             previous = tuple(map(int, current[1].split(".")))
             incoming = tuple(map(int, version.split(".")))

@@ -19,7 +19,7 @@ class ReleaseTests(unittest.TestCase):
         )
 
     def test_stable_versions(self):
-        self.assertEqual(update.release_version("v0.1.0"), "0.1.0")
+        self.assertEqual(update.release_version("v0.0.1"), "0.0.1")
         for tag in ["dev", "snapshot-abc", "v01.1.0", "v1.0.0-rc.1", "1.0.0"]:
             with self.subTest(tag=tag), self.assertRaises(ValueError):
                 update.release_version(tag)
@@ -27,14 +27,14 @@ class ReleaseTests(unittest.TestCase):
     def test_unpublished_rejected(self):
         for draft, prerelease in [(True, False), (False, True)]:
             with (
-                patch.object(update.sys, "argv", ["update-vpdf.py", "v0.1.0"]),
+                patch.object(update.sys, "argv", ["update-vpdf.py", "v0.0.1"]),
                 patch.object(
                     update,
                     "github",
                     return_value={
                         "draft": draft,
                         "prerelease": prerelease,
-                        "tag_name": "v0.1.0",
+                        "tag_name": "v0.0.1",
                     },
                 ),
                 self.assertRaisesRegex(ValueError, "unpublished"),
@@ -48,11 +48,15 @@ class ReleaseTests(unittest.TestCase):
             root = Path(directory)
             (root / "Formula").mkdir()
             formula = root / "Formula/vpdf.rb"
-            formula.write_text('version "0.0.20261031035318"\n')
+            formula.write_text(
+                'version "0.0.20261031035318"\n'
+                'url "https://github.com/letientai299/vpdf/releases/download/'
+                'snapshot-4e38e26b/vpdf-macos-aarch64.tar.gz"\n'
+            )
             assets = [
                 {
                     "name": f"vpdf-{platform}.tar.gz{suffix}",
-                    "browser_download_url": f"https://github.com/letientai299/vpdf/releases/download/v0.1.0/vpdf-{platform}.tar.gz{suffix}",
+                    "browser_download_url": f"https://github.com/letientai299/vpdf/releases/download/v0.0.1/vpdf-{platform}.tar.gz{suffix}",
                 }
                 for platform in ["macos-aarch64", "linux-x86_64"]
                 for suffix in ["", ".sha256"]
@@ -60,18 +64,18 @@ class ReleaseTests(unittest.TestCase):
             release = {
                 "draft": False,
                 "prerelease": False,
-                "tag_name": "v0.1.0",
+                "tag_name": "v0.0.1",
                 "assets": assets,
             }
             with (
                 patch.object(update, "ROOT", root),
-                patch.object(update.sys, "argv", ["update-vpdf.py", "v0.1.0"]),
+                patch.object(update.sys, "argv", ["update-vpdf.py", "v0.0.1"]),
                 patch.object(update, "github", return_value=release),
                 patch.object(update, "checksum", return_value="a" * 64),
             ):
                 update.main()
                 result = formula.read_text()
-                self.assertIn('version "0.1.0"', result)
+                self.assertIn('version "0.0.1"', result)
                 self.assertNotIn("snapshot-", result)
                 self.assertEqual(result.count('sha256 "'), 2)
                 self.assertIn('ENV["VPDF_PREVIEW"] = "text"', result)
