@@ -1,7 +1,6 @@
 class Vpdf < Formula
   desc "Keyboard-driven terminal PDF reader"
   homepage "https://github.com/letientai299/vpdf"
-  version "0.0.1"
   license "AGPL-3.0-or-later"
 
   on_macos do

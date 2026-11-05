@@ -79,7 +79,6 @@ def main():
     formula = """class Vpdf < Formula
   desc "Keyboard-driven terminal PDF reader"
   homepage "https://github.com/letientai299/vpdf"
-  version "VERSION"
   license "AGPL-3.0-or-later"
 
 BLOCKS
@@ -96,13 +95,13 @@ BLOCKS
     assert_match "# Vpdf v#{version}", output
   end
 end
-""".replace("VERSION", version).replace("BLOCKS", "\n\n".join(blocks))
+""".replace("BLOCKS", "\n\n".join(blocks))
     target = ROOT / "Formula" / "vpdf.rb"
     if target.exists():
-        text = target.read_text()
-        # Snapshot versions encode timestamps, not releases.
-        snapshot = "/releases/download/snapshot-" in text
-        current = None if snapshot else re.search(r'version "([0-9.]+)"', text)
+        # Homebrew reads the version from the release URL.
+        current = re.search(
+            r"/releases/download/v([0-9]+\.[0-9]+\.[0-9]+)/", target.read_text()
+        )
         if current:
             previous = tuple(map(int, current[1].split(".")))
             incoming = tuple(map(int, version.split(".")))

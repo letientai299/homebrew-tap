@@ -75,7 +75,8 @@ class ReleaseTests(unittest.TestCase):
             ):
                 update.main()
                 result = formula.read_text()
-                self.assertIn('version "0.0.1"', result)
+                self.assertNotIn('version "', result)
+                self.assertIn("/releases/download/v0.0.1/", result)
                 self.assertNotIn("snapshot-", result)
                 self.assertEqual(result.count('sha256 "'), 2)
                 self.assertIn('ENV["VPDF_PREVIEW"] = "text"', result)
@@ -86,7 +87,8 @@ class ReleaseTests(unittest.TestCase):
                 )
                 with self.assertRaisesRegex(ValueError, "asset pins changed"):
                     update.main()
-                formula.write_text('version "0.2.0"\n')
+                newer = result.replace("/download/v0.0.1/", "/download/v0.2.0/")
+                formula.write_text(newer)
                 with self.assertRaisesRegex(ValueError, "downgrade"):
                     update.main()
-                self.assertEqual(formula.read_text(), 'version "0.2.0"\n')
+                self.assertEqual(formula.read_text(), newer)
