@@ -7,8 +7,8 @@ class Vpdf < Formula
     depends_on arch: :arm64
 
     on_arm do
-      url "https://github.com/letientai299/vpdf/releases/download/v0.0.1/vpdf-macos-aarch64.tar.gz"
-      sha256 "50daba2bfdbfb73c7aa258fbff0c2b36f9bc3f9de15e5c7b5abb246278395c0a"
+      url "https://github.com/letientai299/vpdf/releases/download/v0.0.2/vpdf-macos-aarch64.tar.gz"
+      sha256 "ecd89f9c0a974d2cb05df9808e0d4523d8abf901184d1a6bad3cc7a72d1229ab"
     end
   end
 
@@ -16,8 +16,8 @@ class Vpdf < Formula
     depends_on arch: :x86_64
 
     on_intel do
-      url "https://github.com/letientai299/vpdf/releases/download/v0.0.1/vpdf-linux-x86_64.tar.gz"
-      sha256 "c9aaeacbc22728ff6d21203e00ea7ee2bd70a11830c3e5235f94e8ab84d517a0"
+      url "https://github.com/letientai299/vpdf/releases/download/v0.0.2/vpdf-linux-x86_64.tar.gz"
+      sha256 "707f6d1130fb69bda480192e5fe6f70da3f48c8e41de718703285a422342791a"
     end
   end
 
